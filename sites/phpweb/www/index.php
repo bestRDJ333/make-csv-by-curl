@@ -9,7 +9,7 @@
 </head>
 <body>
   上傳檔案
-  <form id="form" method="post" action="index2.php" enctype="multipart/form-data">
+  <form id="form" method="post" action="export.php" enctype="multipart/form-data">
       <input type="file" id="file" name="file" accept=".csv" />
       <!-- <input type="text" name="daterange" value="01/01/2018 - 01/15/2018" /> -->
       <input type="submit" value="送出"/>
