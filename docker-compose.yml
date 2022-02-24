@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  # php 網站設定 (apache 支援 rewrite 及安裝 PDO，與 Laravel 環境相容)
+  phpweb:
+    build: ./dockerfiles-sample/php8.1.3
+    container_name: phpweb
+    #depends_on:
+      #- db
+    volumes:
+      - ./sites/phpweb/www:/var/www/html/
+      - ./sites/phpweb/apache2/sites-enabled:/etc/apache2/sites-enabled/
+    environment:
+      VIRTUAL_HOST: phpweb.test
+
+  mailcatcher:
+    image: schickling/mailcatcher
+    ports:
+      - "1025:1025"
+      - "1080:1080"
+    environment:
+      MAILCATCHER_PORT: 1025
+
+networks:
+    default:
+      external:
+        name: wp-proxy
