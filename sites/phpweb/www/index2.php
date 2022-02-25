@@ -51,12 +51,10 @@ if(!in_array($extension, $extArr)){
 
 // 拿token
 $curlClass =  new curlClass();
-$postData = array(
-  'username' => _USERNAME,
-  'password' => _PASSWORD
-);
 
-$tokenObj = $curlClass->getCurlData( _getTokenUrl, 'post', $postData);
+
+$curlClass->getToken(_USERNAME, _PASSWORD);
+die();
 // getToken
 $token = (isset($tokenObj->token) && $tokenObj->token !== '')? $tokenObj->token : '';
 if($token === ''){

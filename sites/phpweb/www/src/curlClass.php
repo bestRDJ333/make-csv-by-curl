@@ -33,8 +33,10 @@ class curlClass
 
     //token
     if(!empty($token)){
-      $header[] = $token;
+      $header[] = 'Authorization: Bearer '.$token;
     }
+
+    $this->InitArray[CURLOPT_HTTPHEADER] = $header;
 
     // 返回內容作為變數儲存
     if(!empty($CURLOPT_RETURNTRANSFER)){
@@ -61,15 +63,39 @@ class curlClass
     curl_setopt_array($curl, $this->InitArray);
     $result = curl_exec($curl);
     curl_close($curl);
-    // 回傳為json格式 :obj
-    $resultobj = json_decode($result);
 
-    return $resultobj;
+    return $result;
   }
 
   // 設定加密編碼
   public function setEnCoding($CURLOPT_ENCODING){
     $this->InitArray[CURLOPT_ENCODING] = $CURLOPT_ENCODING;
+  }
+
+  public function getToken($username, $password){
+
+    $postData = array(
+      'username' => $username,
+      'password' => $password
+    );
+
+    $result = $this->getCurlData( _TOKENURL, 'post', $postData);
+    $resultobj = json_decode($result);
+  
+    // 回傳為json格式 :obj
+    return $resultobj = json_decode($result);
+  }
+
+  public function getUserComments($token, $userId, $start_date, $end_date, $page = 1, $per_page = 50){
+    if($token === '' || $userId === '' || $start_date === '' || $end_date === ''){ 
+      return false;
+    }
+    $paramsStr = 'user_id='.$userId.'&start_date='.$start_date.'&end_date='.$end_date.'&page='.$page.'&per_page='.$per_page;
+    $url = _USERCOMMENTSURL . '?' .$paramsStr;
+
+    $result = $this->getCurlData( $url, 'get', array(), $token);
+
+    return $resultobj = json_decode($result);
   }
 
 }
